@@ -1,0 +1,21 @@
+[Quick .gitignore for Unity]
+/Library/
+/Temp/
+/Build/
+/Builds/
+/obj/
+*.csproj
+*.unityproj
+*.sln
+*.user
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+*.pidb.meta
+/UserSettings/
+/Logs/
+.vs/
