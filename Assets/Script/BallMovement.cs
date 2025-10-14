@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Leap;
+using UnityEngine.SceneManagement;
 // using Leap.Unity; // It's good practice to include this namespace
 
 public enum InteractionType {Keyboard, LeapMotion}
@@ -20,6 +21,7 @@ public class BallMovement : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI winText;
     public TextMeshProUGUI modeText;
+    public GameObject restartButton;
 
     private Rigidbody rb;
     private int score;
@@ -39,6 +41,11 @@ public class BallMovement : MonoBehaviour
         if (winText != null)
         {
             winText.gameObject.SetActive(false);
+        }
+
+        if (restartButton != null) // <-- Hide restart button at start
+        {
+            restartButton.SetActive(false);
         }
     }
 
@@ -149,6 +156,10 @@ public class BallMovement : MonoBehaviour
         if (score >= 12 && winText != null)
         {
             winText.gameObject.SetActive(true);
+            if (restartButton != null)
+            {
+                restartButton.SetActive(true);
+            }
         }
     }
     private void UpdateModeText()
@@ -157,6 +168,11 @@ public class BallMovement : MonoBehaviour
         {
             modeText.text = "Mode: " + SelectedInteraction.ToString();
         }
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     
 }
