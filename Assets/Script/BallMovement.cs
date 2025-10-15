@@ -21,6 +21,8 @@ public class BallMovement : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI winText;
     public TextMeshProUGUI modeText;
+    private float elapsedTime = 0f;
+    public TextMeshProUGUI timeText;
     public GameObject restartButton;
 
     private Rigidbody rb;
@@ -31,12 +33,17 @@ public class BallMovement : MonoBehaviour
     // public static InteractionType SelectedInteraction;
     public static InteractionType SelectedInteraction = InteractionType.Keyboard; // Default to Keyboard
 
+    public GameObject repositionButton;
+    private Vector3 initialPosition;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         score = 0;
         UpdateScoreText();
         UpdateModeText();
+
+        initialPosition = transform.position;
 
         if (winText != null)
         {
@@ -75,7 +82,22 @@ public class BallMovement : MonoBehaviour
             }
         }
 
-        
+        // Update timer while game is running and not won
+        if (winText == null || !winText.gameObject.activeSelf)
+        {
+            elapsedTime += Time.deltaTime;
+            if (timeText != null)
+                timeText.text = "Time: " + elapsedTime.ToString("F2") + " s";
+        }
+
+
+    }
+    
+    public void RepositionBall()
+    {
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        transform.position = initialPosition;
     }
 
     public void SwitchInteractionType()
@@ -157,11 +179,14 @@ public class BallMovement : MonoBehaviour
         {
             winText.gameObject.SetActive(true);
             if (restartButton != null)
-            {
                 restartButton.SetActive(true);
-            }
+
+            if (timeText != null)
+                timeText.text = "Final Time: " + elapsedTime.ToString("F2") + " s";
         }
     }
+
+    
     private void UpdateModeText()
     {
         if (modeText != null)
